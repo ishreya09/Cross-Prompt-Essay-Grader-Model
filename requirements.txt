@@ -1,0 +1,7 @@
+textstat
+spacy
+readability
+# To install the spaCy model, run this command separately
+# python -m spacy download en_core_web_sm
+# To install the readability package, run this command separately
+# pip install https://github.com/andreasvc/readability/tarball/master

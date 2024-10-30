@@ -1,0 +1,5 @@
+embeddings/glove.6B.50d.txt
+/OPENAIAPI
+.env
+/.venv
+/Feedback/LlamaKeys.txt
