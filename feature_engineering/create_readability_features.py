@@ -76,6 +76,8 @@ def main():
         # for a given text. While the exact scores returned can depend on the version of the readability library 
         # and the specific configuration, the function generally provides a comprehensive set of readability measures. 
         readability_scores = readability.getmeasures(sentences, lang='en')
+        print(readability_scores)
+        
         features = [essay_id]
         for cat in readability_scores.keys():
             for subcat in readability_scores[cat].keys():
