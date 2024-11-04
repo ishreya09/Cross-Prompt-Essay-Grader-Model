@@ -79,7 +79,7 @@ for prompt_id in range(1, 9):
     coherence_df = pd.DataFrame({
         'Topic': range(len(topic_coherence)),
         'Coherence Score': topic_coherence,
-        'word_dist': lda_model.print_topics(num_words=20)[1]
+        'word_dist': lda_model.print_topics(num_words=10)
     })
     coherence_df.to_csv(f'topic_coherence_scores_{prompt_id}.csv', index=False)
 

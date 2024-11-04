@@ -1,4 +1,4 @@
-Topic,Coherence Score,woord_dist
+Topic,Coherence Score,word_dist
 0,0.08251036895272891,"(0, '0.022*""got"" + 0.019*""time"" + 0.019*""patient"" + 0.018*""get"" + 0.018*""said"" + 0.017*""go"" + 0.015*""went"" + 0.013*""mom"" + 0.012*""day"" + 0.012*""one""')"
 1,-0.0945527665927926,"(1, '0.042*""frame"" + 0.036*""flying"" + 0.019*""work"" + 0.017*""dollar"" + 0.013*""roof"" + 0.013*""however"" + 0.013*""situation"" + 0.013*""sixty"" + 0.012*""load"" + 0.012*""idea""')"
 2,0.16431913632281148,"(2, '0.049*""mood"" + 0.040*""parent"" + 0.036*""family"" + 0.029*""author"" + 0.028*""memoir"" + 0.021*""love"" + 0.020*""home"" + 0.019*""narciso"" + 0.019*""life"" + 0.016*""happy""')"
