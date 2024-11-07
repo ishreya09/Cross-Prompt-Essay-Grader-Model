@@ -204,30 +204,3 @@ def build_ProTACT(pos_vocab_size, vocab_size, maxnum, maxlen, readability_featur
     return model
 
 
-
-    final_preds = []
-    for index, rep in enumerate(range(output_dim)):
-        mask = np.array([True for _ in range(output_dim)])
-        mask[index] = False
-
-        #non_target_rep = tf.boolean_mask(pos_avg_hz_lstm, mask, axis=-2)
-        non_target_rep = BooleanMaskLayer()(pos_avg_hz_lstm, mask, axis=-2)
-        target_rep = pos_avg_hz_lstm[:, index:index+1]
-        att_attention = layers.Attention()([target_rep, non_target_rep])
-
-        #attention_concat = tf.concat([target_rep, att_attention], axis=-1)
-        attention_concat = ConcatLayer()([target_rep, att_attention])
-        
-        attention_concat = layers.Flatten()(attention_concat)
-        final_pred = layers.Dense(units=1, activation='sigmoid')(attention_concat)
-        final_preds.append(final_pred)
-
-    y = layers.Concatenate()([pred for pred in final_preds])
-
-    model = keras.Model(inputs=[pos_input, prompt_word_input, prompt_pos_input, linguistic_input, readability_input], outputs=y)
-    model.summary()
-    model.compile(loss=total_loss, optimizer='rmsprop')
-
-    return model
-
-
