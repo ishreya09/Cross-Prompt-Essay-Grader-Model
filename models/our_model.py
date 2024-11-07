@@ -90,18 +90,18 @@ def trait_sim_loss(y_true, y_pred):
     ts_loss = tf.cond(cnt > 0, lambda: sim_loss/cnt, lambda: ts_loss+0)
     return ts_loss
     
-# def masked_loss_function(y_true, y_pred):
-#     mask_value = -1
-#     mask = K.cast(K.not_equal(y_true, mask_value), K.floatx())
-#     mse = keras.losses.MeanSquaredError()
-#     return mse(y_true * mask, y_pred * mask)
-
-
 def masked_loss_function(y_true, y_pred):
     mask_value = -1
     mask = K.cast(K.not_equal(y_true, mask_value), K.floatx())
-    huber_loss = keras.losses.Huber()
-    return huber_loss(y_true * mask, y_pred * mask)
+    mse = keras.losses.MeanSquaredError()
+    return mse(y_true * mask, y_pred * mask)
+
+
+# def masked_loss_function(y_true, y_pred):
+#     mask_value = -1
+#     mask = K.cast(K.not_equal(y_true, mask_value), K.floatx())
+#     huber_loss = keras.losses.Huber()
+#     return huber_loss(y_true * mask, y_pred * mask)
 
 def total_loss(y_true, y_pred):
     alpha = 0.7
