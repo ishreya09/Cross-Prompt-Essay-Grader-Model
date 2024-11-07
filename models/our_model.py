@@ -64,37 +64,44 @@ def cosine_sim(trait1, trait2):
     cos_similarity = tf.reduce_sum(tf.multiply(normalize_x, normalize_y))
     return cos_similarity
     
-# def trait_sim_loss(y_true, y_pred):
-#     mask_value = -1
-#     mask = K.cast(K.not_equal(y_true, mask_value), K.floatx())
+def trait_sim_loss(y_true, y_pred):
+    mask_value = -1
+    mask = K.cast(K.not_equal(y_true, mask_value), K.floatx())
     
-#     # masking
-#     y_trans = tf.transpose(y_true * mask)
-#     y_pred_trans = tf.transpose(y_pred * mask)
+    # masking
+    y_trans = tf.transpose(y_true * mask)
+    y_pred_trans = tf.transpose(y_pred * mask)
     
-#     sim_loss = 0.0
-#     cnt = 0.0
-#     ts_loss = 0.
-#     #trait_num = y_true.shape[1]
-#     trait_num = 9
-#     print('trait num: ', trait_num)
+    sim_loss = 0.0
+    cnt = 0.0
+    ts_loss = 0.
+    #trait_num = y_true.shape[1]
+    trait_num = 9
+    print('trait num: ', trait_num)
     
-#     # start from idx 1, since we ignore the overall score 
-#     for i in range(1, trait_num):
-#         for j in range(i+1, trait_num):
-#             corr = correlation_coefficient(y_trans[i], y_trans[j])
-#             sim_loss = tf.cond(corr>=0.7, lambda: tf.add(sim_loss, 1-cosine_sim(y_pred_trans[i], y_pred_trans[j])), 
-#                             lambda: tf.add(sim_loss, 0))
-#             cnt = tf.cond(corr>=0.7, lambda: tf.add(cnt, 1), 
-#                             lambda: tf.add(cnt, 0))
-#     ts_loss = tf.cond(cnt > 0, lambda: sim_loss/cnt, lambda: ts_loss+0)
-#     return ts_loss
+    # start from idx 1, since we ignore the overall score 
+    for i in range(1, trait_num):
+        for j in range(i+1, trait_num):
+            corr = correlation_coefficient(y_trans[i], y_trans[j])
+            sim_loss = tf.cond(corr>=0.7, lambda: tf.add(sim_loss, 1-cosine_sim(y_pred_trans[i], y_pred_trans[j])), 
+                            lambda: tf.add(sim_loss, 0))
+            cnt = tf.cond(corr>=0.7, lambda: tf.add(cnt, 1), 
+                            lambda: tf.add(cnt, 0))
+    ts_loss = tf.cond(cnt > 0, lambda: sim_loss/cnt, lambda: ts_loss+0)
+    return ts_loss
     
 # def masked_loss_function(y_true, y_pred):
 #     mask_value = -1
 #     mask = K.cast(K.not_equal(y_true, mask_value), K.floatx())
 #     mse = keras.losses.MeanSquaredError()
 #     return mse(y_true * mask, y_pred * mask)
+
+
+def masked_loss_function(y_true, y_pred):
+    mask_value = -1
+    mask = K.cast(K.not_equal(y_true, mask_value), K.floatx())
+    huber_loss = keras.losses.Huber()
+    return huber_loss(y_true * mask, y_pred * mask)
 
 def total_loss(y_true, y_pred):
     alpha = 0.7
@@ -103,34 +110,29 @@ def total_loss(y_true, y_pred):
     return alpha * mse_loss + (1-alpha) * ts_loss
 
 
-def trait_sim_loss(y_true, y_pred):
-    mask_value = -1
-    mask = K.cast(K.not_equal(y_true, mask_value), K.floatx())
+# def trait_sim_loss(y_true, y_pred):
+#     mask_value = -1
+#     mask = K.cast(K.not_equal(y_true, mask_value), K.floatx())
     
-    # Masking
-    y_trans = tf.transpose(y_true * mask)
-    y_pred_trans = tf.transpose(y_pred * mask)
+#     # Masking
+#     y_trans = tf.transpose(y_true * mask)
+#     y_pred_trans = tf.transpose(y_pred * mask)
     
-    sim_loss = 0.0
-    cnt = 0.0
-    trait_num = 9  # Assume 9 traits
+#     sim_loss = 0.0
+#     cnt = 0.0
+#     trait_num = 9  # Assume 9 traits
 
-    for i in range(1, trait_num):
-        for j in range(i + 1, trait_num):
-            corr = correlation_coefficient(y_trans[i], y_trans[j])
-            # Scaled cosine similarity based on correlation
-            scaled_similarity = (1 - cosine_sim(y_pred_trans[i], y_pred_trans[j])) * corr
-            sim_loss = tf.add(sim_loss, scaled_similarity)
-            cnt = tf.add(cnt, 1)
+#     for i in range(1, trait_num):
+#         for j in range(i + 1, trait_num):
+#             corr = correlation_coefficient(y_trans[i], y_trans[j])
+#             # Scaled cosine similarity based on correlation
+#             scaled_similarity = (1 - cosine_sim(y_pred_trans[i], y_pred_trans[j])) * corr
+#             sim_loss = tf.add(sim_loss, scaled_similarity)
+#             cnt = tf.add(cnt, 1)
 
-    ts_loss = tf.cond(cnt > 0, lambda: sim_loss / cnt, lambda: ts_loss + 0)
-    return K.relu(ts_loss)  # Only positive contributions
+#     ts_loss = tf.cond(cnt > 0, lambda: sim_loss / cnt, lambda: ts_loss + 0)
+#     return K.relu(ts_loss)  # Only positive contributions
 
-def masked_loss_function(y_true, y_pred):
-    mask_value = -1
-    mask = K.cast(K.not_equal(y_true, mask_value), K.floatx())
-    huber_loss = keras.losses.Huber()
-    return huber_loss(y_true * mask, y_pred * mask)
 
 
 def build_ProTACT(pos_vocab_size, vocab_size, maxnum, maxlen, readability_feature_count,
