@@ -304,7 +304,7 @@ def read_essay_sets_with_prompt_only_word_emb(essay_list, readability_features, 
                 y_vector[scores_and_positions[score]] = int(essay[score])
         out_data['data_y'].append(y_vector)
         item_index = np.where(readability_features[:, :1] == essay_id)
-        print("item_index:", item_index)
+        print("item_index:", item_index.shape)
 
         item_row_index = item_index[0][0]
         item_features = readability_features[item_row_index][1:]
