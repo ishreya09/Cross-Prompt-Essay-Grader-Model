@@ -11,7 +11,7 @@ class Configs:
     VOCAB_SIZE = 4000
     DATA_PATH = 'data/cross_prompt_attributes/'
     FEATURES_PATH = 'data/hand_crafted_v3.csv'
-    READABILITY_PATH = 'data/allreadability.pickle'
+    READABILITY_PATH = 'data/PCA/readability.pickle'
     PROMPT_PATH = 'data/prompt_info_pp.csv'
     EPOCHS = 50
     BATCH_SIZE = 10
