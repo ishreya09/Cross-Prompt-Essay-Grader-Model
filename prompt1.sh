@@ -2,4 +2,4 @@
 model_name='ProTACT'
 prompt=1
 seed=12
-python train_ProTACT.py --test_prompt_id ${prompt} --model_name ${model_name} --seed ${seed} --num_heads 2 --features_path 'data/SVD/svd_'
+python train_ProTACT.py --test_prompt_id ${prompt} --model_name ${model_name} --seed ${seed} --num_heads 2 --features_path 'data\hand_crafted_1.csv'
