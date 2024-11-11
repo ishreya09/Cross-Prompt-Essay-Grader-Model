@@ -39,6 +39,7 @@ def main():
     test_prompt_id = args.test_prompt_id
     seed = args.seed
     num_heads = args.num_heads
+    # IMP
     features_path = args.features_path + str(test_prompt_id) + '.csv'
 
     np.random.seed(seed)

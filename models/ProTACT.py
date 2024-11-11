@@ -90,12 +90,13 @@ def trait_sim_loss(y_true, y_pred):
 def masked_loss_function(y_true, y_pred):
     mask_value = -1
     mask = K.cast(K.not_equal(y_true, mask_value), K.floatx())
-    mse = keras.losses.MeanSquaredError()
+    mse = keras.losses.MeanSquaredError() 
+    # Regularization
     return mse(y_true * mask, y_pred * mask)
 
 def total_loss(y_true, y_pred):
-    alpha = 0.7
-    mse_loss = masked_loss_function(y_true, y_pred)
+    alpha = 0.7 # Hyparameter to experiment
+    mse_loss = masked_loss_function(y_true, y_pred) 
     ts_loss = trait_sim_loss(y_true, y_pred)
     return alpha * mse_loss + (1-alpha) * ts_loss
 
@@ -215,7 +216,7 @@ def build_ProTACT(pos_vocab_size, vocab_size, maxnum, maxlen, readability_featur
         attention_concat = layers.Concatenate(axis=-1)([target_rep, att_attention])
         attention_concat = layers.Flatten()(attention_concat)
         # Final prediction layer
-        final_pred = layers.Dense(units=1, activation='sigmoid')(attention_concat)
+        final_pred = layers.Dense(units=1, activation='sigmoid')(attention_concat) 
         final_preds.append(final_pred)
 
     # Concatenating all final predictions
@@ -223,6 +224,6 @@ def build_ProTACT(pos_vocab_size, vocab_size, maxnum, maxlen, readability_featur
 
     model = keras.Model(inputs=[pos_input, prompt_word_input, prompt_pos_input, linguistic_input, readability_input], outputs=y)
     model.summary()
-    model.compile(loss=total_loss, optimizer='rmsprop')
+    model.compile(loss=total_loss, optimizer='rmsprop') # can try adam 
 
     return model
