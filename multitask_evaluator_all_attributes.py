@@ -378,7 +378,7 @@ def create_readability_features(content):
 
 class Evaluator():
     def _init_(self):
-        model_path = "model.h5"
+        model_path = "model/model.h5"
         # Load the model from the specified path
         self.model = tf.keras.models.load_model(model_path)
         
@@ -440,7 +440,7 @@ class Evaluator():
         
     
         
-    def evaluate(self, essay, essay_prompt):
+    def evaluate(self, essay_prompt, essay):
         # Generate linguistic features for the essay
         linguistic_features = generate_linguistic_features(essay, essay_prompt)
         readability_features = create_readability_features(essay)
